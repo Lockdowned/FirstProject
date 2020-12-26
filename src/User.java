@@ -1,19 +1,17 @@
-import FromFile.GetFromUserFile;
+import fromFile.GetFromUserFile;
 
 public class User {
 
-    User(){
+    private String name;
+
+    private String userInfo;
+    private long loginTime;
+    private long allTime;
+
+    public User(){   // NEED PRIVATE
 
     }
 
-
-    private String name;
-
-
-
-    private String userInfo;
-    private long logInTime;
-    private long allTime;
 
     /**
      *
@@ -35,19 +33,19 @@ public class User {
 
 
 
-    public void allTimeUserSession(){
-
+    public void startLoginTime(){
+        loginTime = System.currentTimeMillis();
     }
 
     public void setAllUserParameters(){
 
     }
 
+    public void showStats(){
 
-
-    public void startLogInTime(){
-        logInTime = System.currentTimeMillis();
     }
+
+
 
     public String getName() {
         return name;

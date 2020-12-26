@@ -1,4 +1,4 @@
-import FromFile.GetFromTextFile;
+import fromFile.GetFromTextFile;
 
 public class TextGeneral {
 

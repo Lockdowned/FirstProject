@@ -1,0 +1,3 @@
+IdText: 1##Name: TRAtata#PerMin: 6666.666#Name: Keks#PerMin: 123.331#Name: Rihter#PerMin: 43.223#####IdText: 2##Name: SoName#PerMin: 23.332#####
+IdText: 3##Name: апврвапр#PerMin: 433.925#
+####

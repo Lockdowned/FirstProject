@@ -1,15 +1,16 @@
-package FromFile;
+package fromFile;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GetFromTextFile extends AbstractGetFrom {
 
-    private String filePath = "C:\\Users\\olegk\\JavaProject\\BlindPrint\\resources\\TextFile.txt";
+    private String filePath = "resources/TextFile.txt";
     private String allTexts;
     private ArrayList<Integer> arrId;
-    private int currentId;
+    private int currentId = 0;
     private Random random;
+    boolean singleChecker = false;
 
 
     public GetFromTextFile(){
@@ -21,16 +22,25 @@ public class GetFromTextFile extends AbstractGetFrom {
     }
 
     public String takeRandomText(){
-        if (arrId.size() == 0){
+        if (arrId.isEmpty()){
             System.out.println("File with text is empty, please fill him");
-            currentId = 0;
             return null;
         }
-        int randomId = random.nextInt(arrId.size());
+        String randomText;
+        int randomId;
+        randomId = random.nextInt(arrId.size());
+        if (arrId.size() == 1 && singleChecker) {
+            System.out.println("There is only one text");
+        }else if (arrId.size() > 1){
+            while (randomId == currentId - 1){
+                randomId = random.nextInt(arrId.size());
+            }
+        }
+        singleChecker = true;
         currentId = arrId.get(randomId);
         int helperStart = allTexts.indexOf(currentId + "##");
         int helperEnd = allTexts.indexOf("####", helperStart);
-        String randomText = allTexts.substring(helperStart +
+        randomText = allTexts.substring(helperStart +
                 String.valueOf(Math.abs(currentId)).length() + 2, helperEnd);
         return randomText;
     }
@@ -42,7 +52,7 @@ public class GetFromTextFile extends AbstractGetFrom {
         int startId = 0;
         int endId;
         int findId;
-        String searchMark = "TextId : ";
+        String searchMark = "TextId: ";
         while ((startId = allTexts.indexOf(searchMark, startId)) != -1){
             endId = allTexts.indexOf("##", startId);
             findId = Integer.parseInt(allTexts.substring(startId + searchMark.length(), endId));

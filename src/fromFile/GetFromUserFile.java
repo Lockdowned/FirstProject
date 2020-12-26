@@ -1,13 +1,13 @@
-package FromFile;
+package fromFile;
 
 public class GetFromUserFile extends AbstractGetFrom {
+
+    private String allUsers;
+    private String filePath = "resources/UserFile.txt";
 
     public GetFromUserFile(){
 
     }
-
-    private String allUsers;
-    private String filePath = "C:\\Users\\olegk\\JavaProject\\BlindPrint\\resources\\UserFile.txt";
 
     /**
      *

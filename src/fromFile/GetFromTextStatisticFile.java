@@ -1,12 +1,12 @@
-package FromFile;
+package fromFile;
 
 public class GetFromTextStatisticFile extends AbstractGetFrom{
 
     private String allStatistic;
-    private String filePath = "C:\\Users\\olegk\\JavaProject\\BlindPrint\\resources\\StatisticText.txt";
+    private String filePath = "resources/StatisticText.txt";
 
 
-    public GetFromTextStatisticFile(){
+    public GetFromTextStatisticFile(){   // NEED PRIVATE
 
     }
 
@@ -17,7 +17,7 @@ public class GetFromTextStatisticFile extends AbstractGetFrom{
         }
         int startCount = allStatistic.indexOf(idText + "##");
         int endCount = allStatistic.indexOf("####", startCount);
-        return allStatistic.substring(startCount, endCount);
+        return allStatistic.substring(startCount + 3, endCount + 4);  // надо нормально регуляркой
     }
 
 }

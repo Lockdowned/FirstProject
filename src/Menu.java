@@ -4,48 +4,48 @@ import java.util.Scanner;
 public class Menu {
 
 
-    private User logInUser;
+    private User loginUser;
     private TextGeneral text;
     private StatisticText statisticText;
+    private Scanner in;
 
 
     public Menu() {
-        logInUser = new User();
+        loginUser = new User();
         text = new TextGeneral();
         statisticText = new StatisticText();
+        in = new Scanner(System.in);
     }
 
 
-    public User logIn(){
-        Scanner in = new Scanner(System.in);
+    public void logIn(){
         System.out.println("Please write Username");
         String currentName = in.next();
-        if (logInUser.check(currentName)){
-            System.out.println("Glad to see you again - " + logInUser.getName());
+        if (loginUser.check(currentName)){
+            System.out.println("Glad to see you again - " + loginUser.getName());
 
         }else {
             System.out.println("Do you want use new profile?");
             if (questionYesOrNo()){
-                System.out.println("Was create new User: " + logInUser.getName());
+                System.out.println("Was create new User: " + loginUser.getName());
             }else {
                 logIn();
             }
         }
-        logInUser.startLogInTime();
-        return logInUser;
+        loginUser.startLoginTime();
+
     }
 
     public void mainMenu(){
         System.out.println("You are in the main menu\n" +
                 "Write 1 to get random text, write 2 to relogin");
-        int answer;
+        int answer = 0;
         do {
-            Scanner in = new Scanner(System.in);
-            answer = 0;
             try {
                 answer = in.nextInt();
             }catch (InputMismatchException e){
                 System.out.println("Can write only number");
+                in = new Scanner(System.in);
             }
             switch (answer){
                 case 1: randomText();
@@ -59,9 +59,10 @@ public class Menu {
             }
         }while (answer == 0 || answer > 2);
 
+        endMenu();
+
 
     }
-
 
 
 
@@ -71,38 +72,100 @@ public class Menu {
             System.out.println("Text not found");
             mainMenu();
         }
-        boolean readyToWrite = false;
-        while (!readyToWrite){
-            System.out.println("Text with id: " + text.getIdText());
-            System.out.println(text.getCurrentText());
-            System.out.println("Are you ready to write?\n" +
-                    "Yes - start write, No - other text");
-            readyToWrite = questionYesOrNo();
-            if (!readyToWrite){
-                text.random();
-            }
+        while (!readyToWrite()){
+            text.random();
         }
-        statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText());
-
-
+        statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
+                loginUser.getName());
+        statisticText.showTopRate();
     }
 
     private void reLogIn(){
-        logInUser = new User();
+        // User to UserSaver
+        loginUser = new User();
         logIn();
         mainMenu();
     }
+
+
+    private void endMenu(){
+        String choseMessage = "\nWrite:\n1 - to retry current text, 2 - to try other text,\n" +
+                "3 - to see statistics about your user,\n" +
+                "4 - to the main menu, 5 - to close app";
+        int answer = 0;
+        do {
+            System.out.println(choseMessage);
+            try {
+                answer = in.nextInt();
+            }catch (InputMismatchException e) {
+                System.out.println("Can write only number");
+                in = new Scanner(System.in);
+            }
+            switch (answer){
+                case 1:
+                    while (!readyToWrite()){
+                        text.random();   // later otherText
+                    }
+                    statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
+                            loginUser.getName());
+                    statisticText.showTopRate();
+                    endMenu();
+                    break;
+                case 2:
+                    text.random();  // later otherText
+                    while (!readyToWrite()){
+                        text.random();  // later otherText
+                    }
+                    statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
+                            loginUser.getName());
+                    statisticText.showTopRate();
+                    endMenu();
+                    break;
+                case 3:
+                    loginUser.showStats();
+                    endMenu();
+                    break;
+                case 4: mainMenu();
+                    break;
+                case 5: terminate();
+                statisticText.saveBeforeClose();
+                    break;
+            }
+        } while (answer == 0 || answer > 5);
+
+
+    }
+
+
+    /**
+     * метод нужен для получение другого случайного текста
+     * из конкретной подгруппы
+     */
+    private void otherText(){
+
+    }
+
+
+    /**
+     * save all aggregations information in file
+     * and then close app
+     */
+    private void terminate(){
+
+    }
+
+
 
 
 
     private boolean questionYesOrNo(){
         System.out.println("Yes write 1, No write 2.");
         int answer = 0;
-        Scanner In = new Scanner(System.in);
         try {
-            answer = In.nextInt();
+            answer = in.nextInt();
         }catch (InputMismatchException e){
             System.out.println("Can write only number");
+            in = new Scanner(System.in);
         }
         if(answer == 1){
             return true;
@@ -112,5 +175,15 @@ public class Menu {
            return questionYesOrNo();
         }
     }
+
+    private boolean readyToWrite(){
+        System.out.println("Text with id: " + text.getIdText());
+        System.out.println(text.getCurrentText());
+        System.out.println("Are you ready to write?\n" +
+                "Yes - start write, No - other text");
+        return questionYesOrNo();
+    }
+
+
 
 }
