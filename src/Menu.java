@@ -33,6 +33,7 @@ public class Menu {
             }
         }
         loginUser.startLoginTime();
+        loginUser.fillSortedMap();
 
     }
 
@@ -75,16 +76,21 @@ public class Menu {
         while (!readyToWrite()){
             text.random();
         }
-        statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
-                loginUser.getName());
-        statisticText.showTopRate();
+        analyzeAndShow();
     }
 
     private void reLogIn(){
         // User to UserSaver
+        loginUser.saveBeforeLogout();
         loginUser = new User();
         logIn();
         mainMenu();
+    }
+
+    private void analyzeAndShow(){
+        loginUser.setAllUserParameters(text.getIdText(),
+                statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(), loginUser.getName()));
+        statisticText.showTopRate();
     }
 
 
@@ -106,9 +112,7 @@ public class Menu {
                     while (!readyToWrite()){
                         text.random();   // later otherText
                     }
-                    statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
-                            loginUser.getName());
-                    statisticText.showTopRate();
+                    analyzeAndShow();
                     endMenu();
                     break;
                 case 2:
@@ -116,9 +120,7 @@ public class Menu {
                     while (!readyToWrite()){
                         text.random();  // later otherText
                     }
-                    statisticText.analyzeSymbolPerMin(text.getCurrentText(), text.getIdText(),
-                            loginUser.getName());
-                    statisticText.showTopRate();
+                    analyzeAndShow();
                     endMenu();
                     break;
                 case 3:
@@ -126,10 +128,9 @@ public class Menu {
                     endMenu();
                     break;
                 case 4: mainMenu();
-                    break;
+                    return;
                 case 5: terminate();
-                statisticText.saveBeforeClose();
-                    break;
+                    return;
             }
         } while (answer == 0 || answer > 5);
 
@@ -137,11 +138,12 @@ public class Menu {
     }
 
 
+
     /**
      * метод нужен для получение другого случайного текста
      * из конкретной подгруппы
      */
-    private void otherText(){
+    private void otherText(int sectionText){
 
     }
 
@@ -151,6 +153,8 @@ public class Menu {
      * and then close app
      */
     private void terminate(){
+        statisticText.saveBeforeClose();
+        loginUser.saveBeforeLogout();
 
     }
 

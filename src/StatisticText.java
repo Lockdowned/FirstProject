@@ -1,5 +1,4 @@
-import fromFile.GetFromTextStatisticFile;
-import resultSaver.StatisticSaver;
+import fileActions.StatisticSaver;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -14,13 +13,15 @@ public class StatisticText {
     private long elapsedTime;
     private double lastResultSymbolPerMin;
     private int previousTextId;
-    private StatisticSaver conserve;
+    private StatisticSaver actionsOnTheStatisticsFile;
     private int currentId;
+    DecimalFormat decimalFormat;
 
 
     public StatisticText(){
         topRateUser = new TreeMap<>(Collections.reverseOrder());
-        conserve = StatisticSaver.getInstance();
+        actionsOnTheStatisticsFile = StatisticSaver.getInstance();
+        decimalFormat = new DecimalFormat("###.###");
 
     }
 
@@ -43,7 +44,6 @@ public class StatisticText {
         if (validateText(printText, writtenText)){
             char[] charsWrittenText = writtenText.toCharArray();
             double symbolPerMin = (double)charsWrittenText.length / ((double)elapsedTime / 60000);
-            DecimalFormat decimalFormat = new DecimalFormat("###.###");
             lastResultSymbolPerMin = Double.parseDouble(decimalFormat.format(symbolPerMin));
             System.out.println("Your current result of characters per minute: " + lastResultSymbolPerMin + "\n");
             topRateUser.put(lastResultSymbolPerMin, userName);
@@ -86,13 +86,12 @@ public class StatisticText {
 
     private void fillTopRateUser(int idText){
         if (!topRateUser.isEmpty()){
-            conserve.changeAggregate(previousTextId, topRateUser);
+            actionsOnTheStatisticsFile.changeAggregate(previousTextId, topRateUser);
             topRateUser.clear();
         }
-        currentTextStat = conserve.getActualStats(idText);
-        GetFromTextStatisticFile get = new GetFromTextStatisticFile();  // to singleton
+        currentTextStat = actionsOnTheStatisticsFile.getActualStats(idText);
         if (currentTextStat == null){
-            currentTextStat = get.takeStatOnId(idText);
+            currentTextStat = actionsOnTheStatisticsFile.takeStatOnId(idText);
         }
         if (currentTextStat == null){
             return;
@@ -118,10 +117,9 @@ public class StatisticText {
     }
 
     public void saveBeforeClose(){
-        conserve.changeAggregate(currentId, topRateUser);
-        conserve.saveToFile();
+        actionsOnTheStatisticsFile.changeAggregate(currentId, topRateUser);
+        actionsOnTheStatisticsFile.saveToFile();
     }
-
 
 
 

@@ -3,6 +3,5 @@ public class MainTest {
         Menu menu = new Menu();
         menu.logIn();
         menu.mainMenu();
-
     }
 }

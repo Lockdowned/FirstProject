@@ -1,4 +1,4 @@
-package fromFile;
+package fileActions;
 
 import java.io.*;
 
@@ -20,12 +20,17 @@ public abstract class AbstractGetFrom {
         String temporal;
         try {
             while ((temporal = (direction.readLine())) != null){
-                fileString.append(temporal);
+                fileString.append(temporal).append("\n");
             }
         }catch (IOException e){
             e.printStackTrace();
+        }finally {
+            try {
+                direction.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
         return fileString.toString();
     }
 }

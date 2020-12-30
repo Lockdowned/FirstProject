@@ -1,4 +1,4 @@
-package fromFile;
+package fileActions;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +10,7 @@ public class GetFromTextFile extends AbstractGetFrom {
     private ArrayList<Integer> arrId;
     private int currentId = 0;
     private Random random;
-    boolean singleChecker = false;
+    boolean firstAccessChecker = false;
 
 
     public GetFromTextFile(){
@@ -29,19 +29,19 @@ public class GetFromTextFile extends AbstractGetFrom {
         String randomText;
         int randomId;
         randomId = random.nextInt(arrId.size());
-        if (arrId.size() == 1 && singleChecker) {
+        if (arrId.size() == 1 && firstAccessChecker) {
             System.out.println("There is only one text");
         }else if (arrId.size() > 1){
             while (randomId == currentId - 1){
                 randomId = random.nextInt(arrId.size());
             }
         }
-        singleChecker = true;
+        firstAccessChecker = true;
         currentId = arrId.get(randomId);
         int helperStart = allTexts.indexOf(currentId + "##");
         int helperEnd = allTexts.indexOf("####", helperStart);
         randomText = allTexts.substring(helperStart +
-                String.valueOf(Math.abs(currentId)).length() + 2, helperEnd);
+                String.valueOf(Math.abs(currentId)).length() + 3, helperEnd - 1);
         return randomText;
     }
 
@@ -56,7 +56,7 @@ public class GetFromTextFile extends AbstractGetFrom {
         while ((startId = allTexts.indexOf(searchMark, startId)) != -1){
             endId = allTexts.indexOf("##", startId);
             findId = Integer.parseInt(allTexts.substring(startId + searchMark.length(), endId));
-            startId += searchMark.length() + 5;
+            startId += searchMark.length();
             arrId.add(findId);
         }
 
