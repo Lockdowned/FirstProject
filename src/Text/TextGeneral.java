@@ -4,7 +4,7 @@ public class TextGeneral {
 
     private String currentText;
     private int idText;
-    private GetFromTextFile getFromTextFile;
+    private final GetFromTextFile getFromTextFile;
 
     public TextGeneral(){
         getFromTextFile = new GetFromTextFile();

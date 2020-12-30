@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class StatisticSaver extends AbstractGetFrom implements IStatisticSaver {
 
-    private Map<Integer, String> aggregateInfo;
-    private StringBuilder stringBuilder;
-    private List<String> arrForFreshId;
+    private final Map<Integer, String> aggregateInfo;
+    private final StringBuilder stringBuilder;
+    private final List<String> arrForFreshId;
     private String sourceText;
     private String filePath = "resources/StatisticText.txt";
 

@@ -10,17 +10,14 @@ public class User implements IUser{
     private String name;
     private String userInfo;
     private long loginTime;
-    private long allTime;
-    private UserSaver info;
-    private StringBuilder stringBuilder;
-    private StringBuilder stringBuilderForShow;
-    private Map<Double, String> sortedMapResult;
+    private final UserSaver info;
+    private final StringBuilder stringBuilder;
+    private final Map<Double, String> sortedMapResult;
     DecimalFormat decimalFormat;
 
     public User(){
         info = new UserSaver();
         stringBuilder = new StringBuilder();
-        stringBuilderForShow = new StringBuilder();
         sortedMapResult = new TreeMap<>(Collections.reverseOrder());
         decimalFormat = new DecimalFormat("###.##");
     }

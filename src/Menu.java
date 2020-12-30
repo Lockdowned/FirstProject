@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Menu implements IMenu{
 
     private User loginUser;
-    private TextGeneral text;
-    private StatisticText statisticText;
+    private final TextGeneral text;
+    private final StatisticText statisticText;
     private Scanner in;
 
     public Menu() {
@@ -85,7 +85,7 @@ public class Menu implements IMenu{
      * then it goes to the main menu
      */
     private void reLogIn(){
-        // user.User to UserSaver
+        // User to UserSaver
         loginUser.saveBeforeLogout();
         loginUser = new User();
         logIn();
@@ -159,6 +159,7 @@ public class Menu implements IMenu{
     private void terminate(){
         statisticText.saveBeforeClose();
         loginUser.saveBeforeLogout();
+        System.exit(0);
     }
 
     /**

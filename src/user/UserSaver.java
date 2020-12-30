@@ -11,7 +11,7 @@ public class UserSaver extends AbstractGetFrom implements IUserSaver{
 
     private String allUsers;
     private String filePath = "resources/UserFile.txt";
-    private StringBuilder stringBuilder;
+    private final StringBuilder stringBuilder;
     private String checkAllUsers;
 
     public UserSaver(){

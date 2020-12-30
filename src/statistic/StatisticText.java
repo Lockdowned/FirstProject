@@ -8,17 +8,12 @@ import java.util.TreeMap;
 
 public class StatisticText implements IStatisticText{
 
-    private String currentTextStat;
-    private Map<Double, String> topRateUser;
-    private long elapsedTime;
-    private double lastResultSymbolPerMin;
+    private final Map<Double, String> topRateUser;
     private int previousTextId;
-    private StatisticSaver actionsOnTheStatisticsFile;
+    private final StatisticSaver actionsOnTheStatisticsFile;
     private int currentId;
-    private DecimalFormat decimalFormat;
-    private DecimalFormat decimalFormatForMistakes;
-    private boolean checkerSingle = true;
-
+    private final DecimalFormat decimalFormat;
+    private final DecimalFormat decimalFormatForMistakes;
 
     public StatisticText(){
         topRateUser = new TreeMap<>(Collections.reverseOrder());
@@ -33,15 +28,15 @@ public class StatisticText implements IStatisticText{
             fillTopRateUser(idText);
         }
         previousTextId = idText;
-        System.out.println("Write this text: \n" + printText);
+        System.out.println("Line break is a space\nWrite this text: \n" + printText);
         long startTime = System.currentTimeMillis();
         Scanner in = new Scanner(System.in);
         String writtenText = in.nextLine();
-        elapsedTime = System.currentTimeMillis() - startTime;
+        long elapsedTime = System.currentTimeMillis() - startTime;
         if (validateText(printText, writtenText)){
             char[] charsWrittenText = writtenText.toCharArray();
-            double symbolPerMin = (double)charsWrittenText.length / ((double)elapsedTime / 60000);
-            lastResultSymbolPerMin = Double.parseDouble(decimalFormat.format(symbolPerMin));
+            double symbolPerMin = (double)charsWrittenText.length / ((double) elapsedTime / 60000);
+            double lastResultSymbolPerMin = Double.parseDouble(decimalFormat.format(symbolPerMin));
             System.out.println("Your current result of characters per minute: "
                     + lastResultSymbolPerMin + "\n");
             topRateUser.put(lastResultSymbolPerMin, userName);
@@ -59,7 +54,7 @@ public class StatisticText implements IStatisticText{
      * @return true if the entered text matches the found text (by 85%)
      */
     private boolean validateText(String printText, String writtenText){
-        if (true){
+        if (true){    // HIDE THIS FOR WORK
             return true;
         }
         printText = printText.replaceAll("\n", " ");
@@ -113,7 +108,7 @@ public class StatisticText implements IStatisticText{
             actionsOnTheStatisticsFile.changeAggregate(previousTextId, topRateUser);
             topRateUser.clear();
         }
-        currentTextStat = actionsOnTheStatisticsFile.getActualStats(idText);
+        String currentTextStat = actionsOnTheStatisticsFile.getActualStats(idText);
         if (currentTextStat == null){
             currentTextStat = actionsOnTheStatisticsFile.takeStatOnId(idText);
         }
@@ -141,10 +136,7 @@ public class StatisticText implements IStatisticText{
 
     @Override
     public void saveBeforeClose(){
-        if (checkerSingle){
-            actionsOnTheStatisticsFile.changeAggregate(currentId, topRateUser);
-            actionsOnTheStatisticsFile.saveToFile();
-        }
-        checkerSingle = false;
+        actionsOnTheStatisticsFile.changeAggregate(currentId, topRateUser);
+        actionsOnTheStatisticsFile.saveToFile();
     }
 }

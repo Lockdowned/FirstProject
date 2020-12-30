@@ -38,7 +38,7 @@ public abstract class AbstractGetFrom implements IAbstractGetFrom{
      * if file doesn't exist create it
      * @param filePath path where the file should be located
      */
-    private void createFolderAndFile(String filePath){ // пока что создаёт только файлы: statistic.StatisticText и UserFile
+    private void createFolderAndFile(String filePath){ // пока что создаёт только файлы: StatisticText и UserFile
         Path path = Paths.get(filePath);
         if (!Files.exists(path)){
             File createFile = new File(path.getParent().toString(),
