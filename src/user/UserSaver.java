@@ -1,16 +1,14 @@
-package fileActions;
+package user;
+
+import fileCommon.AbstractGetFrom;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-public class UserSaver extends AbstractGetFrom implements Aggregation {
+public class UserSaver extends AbstractGetFrom implements IUserSaver{
 
-    @Override
-    public Map<Integer, String> getFromAggregateInfo() {
-        return null;
-    }
     private String allUsers;
     private String filePath = "resources/UserFile.txt";
     private StringBuilder stringBuilder;
@@ -18,26 +16,9 @@ public class UserSaver extends AbstractGetFrom implements Aggregation {
 
     public UserSaver(){
         stringBuilder = new StringBuilder();
-
-    }
-
-
-    public void changeAggregate(int idText, String info) {
-
     }
 
     @Override
-    public void saveToFile() {
-
-    }
-
-
-    /**
-     *
-     * @param userName имя пользователя которое ищем
-     * @return text с информацией о конкретном пользователе
-     *         или null если ничего не найдено
-     */
     public String findInfo(String userName){
         String userHelper = "Name: " + userName;
         int starInfo;
@@ -51,16 +32,10 @@ public class UserSaver extends AbstractGetFrom implements Aggregation {
         }
         starInfo = allUsers.indexOf(userHelper);
         endInfo = allUsers.indexOf("####", starInfo + userName.length());
-
         return allUsers.substring(starInfo + userName.length(), endInfo + 4);
     }
 
-
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
+    @Override
     public void saveToFile(String name, Map<Double, String> sortedMapResult, long timeInMillis){
         Double[] toForeEach = sortedMapResult.keySet().toArray(new Double[0]);
         String helperName = "Name: " + name;
@@ -86,14 +61,5 @@ public class UserSaver extends AbstractGetFrom implements Aggregation {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
-
 }
-
-
-
-
-
-

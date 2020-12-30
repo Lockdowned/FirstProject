@@ -1,24 +1,24 @@
-package fileActions;
+package Text;
+
+import fileCommon.AbstractGetFrom;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GetFromTextFile extends AbstractGetFrom {
+public class GetFromTextFile extends AbstractGetFrom implements IGetFromTextFile {
 
     private String filePath = "resources/TextFile.txt";
-    private String allTexts;
-    private ArrayList<Integer> arrId;
+    private final String allTexts;
+    private final ArrayList<Integer> arrId;
     private int currentId = 0;
-    private Random random;
+    private final Random random;
     boolean firstAccessChecker = false;
-
 
     public GetFromTextFile(){
         allTexts = getFileToString(filePath);
         arrId = new ArrayList<>();
         fillInArrayId();
         random = new Random();
-
     }
 
     public String takeRandomText(){
@@ -46,7 +46,7 @@ public class GetFromTextFile extends AbstractGetFrom {
     }
 
     /**
-     * fill in arrId find id
+     * fill in List find id from file
      */
     private void fillInArrayId(){
         int startId = 0;
@@ -59,17 +59,12 @@ public class GetFromTextFile extends AbstractGetFrom {
             startId += searchMark.length();
             arrId.add(findId);
         }
-
     }
 
-    public String resetScanFile(){
-        return null;
+    public void resetScanFile(){
     }
 
     public int getCurrentId() {
         return currentId;
     }
-
-
-
 }

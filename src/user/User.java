@@ -1,14 +1,13 @@
-import fileActions.UserSaver;
+package user;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class User {
+public class User implements IUser{
 
     private String name;
-
     private String userInfo;
     private long loginTime;
     private long allTime;
@@ -26,13 +25,7 @@ public class User {
         decimalFormat = new DecimalFormat("###.##");
     }
 
-
-    /**
-     *
-     * @param userName имя пользователя
-     * @return true если пользователь существует
-     *         или false если пользователь не найден
-     */
+    @Override
     public boolean check(String userName){  //Use only in login
         String toInfo;
         name = userName;
@@ -43,12 +36,12 @@ public class User {
         return true;
     }
 
-
-
+    @Override
     public void startLoginTime(){
         loginTime = System.currentTimeMillis();
     }
 
+    @Override
     public void setAllUserParameters(int textId, double scorePerMin) {
         if (scorePerMin == 0) {
             return;
@@ -57,7 +50,7 @@ public class User {
         sortedMapResult.put(scorePerMin, idHelper);
     }
 
-
+    @Override
     public void showStats(){
         fillSortedMap();
         String showTime = "\nAll the time spent in the application: "
@@ -84,6 +77,7 @@ public class User {
         stringBuilder.setLength(0);
     }
 
+    @Override
     public void fillSortedMap(){
         int startCount = 0;
         int endCount;
@@ -104,6 +98,10 @@ public class User {
         }
     }
 
+    /**
+     * counts the time spent in the application
+     * @return time spent in the application in milliseconds
+     */
     private long timeInMillis(){
         int helper;
         int helperEnd;
@@ -119,23 +117,22 @@ public class User {
         return System.currentTimeMillis() - loginTime;
     }
 
+    /**
+     * converts milliseconds to minutes
+     * @param timeInMillis actual time spent by the user in the application in milliseconds
+     * @return formatted and rounded time spent in the application in minutes
+     */
     private double timeInMinutes(long timeInMillis){
         return Double.parseDouble(decimalFormat.format((double)timeInMillis / 60000));
     }
 
-
-
+    @Override
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Override
     public void saveBeforeLogout(){
         info.saveToFile(name, sortedMapResult, timeInMillis());
-
     }
-
 }

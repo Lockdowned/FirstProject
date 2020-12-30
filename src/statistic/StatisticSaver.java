@@ -1,4 +1,6 @@
-package fileActions;
+package statistic;
+
+import fileCommon.AbstractGetFrom;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,24 +8,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StatisticSaver extends AbstractGetFrom implements Aggregation {
+public class StatisticSaver extends AbstractGetFrom implements IStatisticSaver {
 
-
-    private static StatisticSaver instance;
     private Map<Integer, String> aggregateInfo;
     private StringBuilder stringBuilder;
     private List<String> arrForFreshId;
     private String sourceText;
     private String filePath = "resources/StatisticText.txt";
 
-
-    private StatisticSaver(){
+    public StatisticSaver(){
         aggregateInfo = new HashMap<>();
         stringBuilder = new StringBuilder();
         arrForFreshId = new ArrayList<>();
     }
 
-
+    @Override
     public void changeAggregate(int idText, Map<Double, String> topRateUser) {
         stringBuilder.setLength(0);
         Double[] toForeEach = topRateUser.keySet().toArray(new Double[0]);
@@ -32,10 +31,9 @@ public class StatisticSaver extends AbstractGetFrom implements Aggregation {
             stringBuilder.append(" PerMin: ").append(foreEach).append("#");
         }
         aggregateInfo.put(idText, stringBuilder.toString());
-
     }
 
-
+    @Override
     public String getActualStats(int idText){
         if (!aggregateInfo.containsKey(idText)){
             return null;
@@ -72,22 +70,9 @@ public class StatisticSaver extends AbstractGetFrom implements Aggregation {
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
 
     @Override
-    public Map<Integer, String> getFromAggregateInfo() {
-        return null;
-    }
-
-    public static StatisticSaver getInstance(){
-        if (instance == null){
-            return instance = new StatisticSaver();
-        }
-        return instance;
-    }
-    
-    
     public String takeStatOnId(int idText){
         if (sourceText == null){
             sourceText = getFileToString(filePath);
@@ -102,6 +87,4 @@ public class StatisticSaver extends AbstractGetFrom implements Aggregation {
         int endCount = sourceText.indexOf("####", startCount);
         return sourceText.substring(startCount + String.valueOf(idText).length() + 2, endCount);
     }
-
-
 }
